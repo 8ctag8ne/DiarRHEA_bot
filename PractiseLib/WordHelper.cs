@@ -40,9 +40,11 @@ namespace SplittingScript
         }
         public static bool ContainsNonTextContent(OpenXmlElement element)
         {
-            return element.Descendants<Drawing>().Any() || // Зображення
-                element.Descendants<DocumentFormat.OpenXml.Drawing.Picture>().Any() ||    // Малюнки (w:pict)
-                element.Descendants<OleObject>().Any(); // Вбудовані об'єкти (OLE)
+            return element.Descendants<Drawing>().Any() || // Графічні об'єкти
+                element.Descendants<DocumentFormat.OpenXml.Drawing.Picture>().Any() || // Малюнки (w:pict)
+                element.Descendants<OleObject>().Any() || // Вбудовані об'єкти (OLE)
+                element.Descendants<DocumentFormat.OpenXml.Drawing.Blip>().Any() || // Зображення у Drawing
+                element.Descendants<DocumentFormat.OpenXml.Vml.ImageData>().Any(); // Старі зображення у w:pict
         }
 
         public static void CreateWordDocument(string filePath, List<OpenXmlElement> content, MainDocumentPart originalMainPart)
@@ -214,10 +216,12 @@ namespace SplittingScript
 
         public static bool ContainsSignature(OpenXmlElement element)
         {
-            return element.Descendants<DocumentFormat.OpenXml.Wordprocessing.Drawing>().Any() ||
-                element.Descendants<DocumentFormat.OpenXml.Wordprocessing.Picture>().Any() ||
-                element.Descendants<DocumentFormat.OpenXml.Vml.Shape>().Any() ||
-                element.Descendants<DocumentFormat.OpenXml.Vml.ImageData>().Any();
+            return element.Descendants<Drawing>().Any() || // Графічні об'єкти
+           element.Descendants<DocumentFormat.OpenXml.Wordprocessing.Picture>().Any() || // Малюнки у w:pict
+           element.Descendants<DocumentFormat.OpenXml.Vml.Shape>().Any() || // VML Shape (можуть містити підписи)
+           element.Descendants<DocumentFormat.OpenXml.Drawing.Blip>().Any() || // Вбудовані зображення у DrawingML
+           element.Descendants<DocumentFormat.OpenXml.Vml.ImageData>().Any() || // Старі зображення у w:pict
+            element.Descendants<DocumentFormat.OpenXml.Drawing.Graphic>().Any();
         }
 
         public static string RemoveImagesAndGetText(OpenXmlElement element)

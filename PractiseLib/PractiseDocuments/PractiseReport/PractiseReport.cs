@@ -44,6 +44,7 @@ namespace SplittingScript.PractiseDocuments.PractiseReport
 
                 foreach (var element in elements)
                 {
+                    // Console.WriteLine($"Checking element: {element.LocalName}");
                     bool containsSignature = WordHelper.ContainsSignature(element);
                     bool IsBold = WordHelper.IsBoldText(element);
                     string text = WordHelper.RemoveImagesAndGetText(element).Trim();
@@ -53,7 +54,7 @@ namespace SplittingScript.PractiseDocuments.PractiseReport
                         lastKey = "University";
                     else if (text.StartsWith("Факультет"))
                         lastKey = "Faculty";
-                    else if (text.StartsWith("Кафедра"))
+                    else if (text.StartsWith("Кафедра") || text.StartsWith("Катедра"))
                         lastKey = "Department";
                     else if (text.StartsWith("Звіт"))
                         lastKey = "Title";

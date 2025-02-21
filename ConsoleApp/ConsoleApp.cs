@@ -9,7 +9,7 @@ using SplittingScript.PractiseDiaryKNU;
 
 public static class ConsoleApp
 {
-    public static void Main()
+    public static async System.Threading.Tasks.Task Main()
     {
         var checker = new DocumentChecker();
 
@@ -39,7 +39,7 @@ public static class ConsoleApp
 
                     case "check":
                         checker.Checker = GetCheckerForDocument(document);
-                        Console.WriteLine(checker.CheckAsync(document));
+                        Console.WriteLine(await checker.CheckAsync(document));
                         break;
 
                     default:
